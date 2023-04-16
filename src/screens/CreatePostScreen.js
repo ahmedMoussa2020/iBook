@@ -4,6 +4,8 @@ import { Button } from "react-native";
 import { TextInput } from "react-native";
 import { Image, StyleSheet, Text, View } from "react-native";
 // import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Entypo } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 
 const user = {
   id: "u1",
@@ -14,6 +16,7 @@ const user = {
 
 const createPostScreen = () => {
   const [description, setDescription] = useState("");
+  const [image, setImage] = useState(null);
   // const insets = useSafeAreaInsets();
 
   const onSubmit = () => {
@@ -21,16 +24,38 @@ const createPostScreen = () => {
     setDescription(" ");
   };
 
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={[styles.container, { marginBottom: 10 }]}
+      style={[styles.container, { marginBottom: 5 }]}
       contentContainerStyle={{ flex: 1 }}
       keyboardVerticalOffset={150}
     >
       <View style={styles.header}>
-        <Image source={{ uri: user.image }} style={styles.image} />
+        <Image source={{ uri: user.image }} style={styles.profileImage} />
         <Text style={styles.name}>{user.name}</Text>
+        <Entypo
+          onPress={pickImage}
+          name="images"
+          size={24}
+          color="limegreen"
+          style={styles.icon}
+        />
       </View>
 
       {/* Text Input */}
@@ -38,8 +63,11 @@ const createPostScreen = () => {
         value={description}
         onChangeText={setDescription}
         placeholder="What is on your mind?"
+        style={styles.input}
         multiline
       />
+
+      <Image source={{ uri: image }} style={styles.image} />
 
       <View style={styles.buttonContainer}>
         <Button title="Post" onPress={onSubmit} />
@@ -62,17 +90,28 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBottom: 10,
   },
-  image: {
+  profileImage: {
     width: 50,
     height: 50,
     borderRadius: 50,
     marginRight: 10,
   },
+  image: {
+    width: "50%",
+    aspectRatio: 4/3,
+    alignSelf: "center",
+  },
   name: {
     fontWeight: "bold",
   },
+  input: {
+    marginBottom: "auto",
+  },
   buttonContainer: {
-    marginTop: 'auto',
+    marginTop: "auto",
+  },
+  icon: {
+    marginLeft: "auto",
   },
 });
 
