@@ -6,7 +6,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 // import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Entypo } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import {useNavigation} from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 const user = {
   id: "u1",
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "50%",
-    aspectRatio: 4/3,
+    aspectRatio: 4 / 3,
     alignSelf: "center",
   },
   name: {
